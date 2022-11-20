@@ -30,6 +30,10 @@ app.MapControllerRoute(
     pattern: "{controller=Home}/{action}/Page/{num}");
 
 app.MapControllerRoute(
+    name: "search",
+    pattern: "{controller=Home}/{action=Search}/{NameFilter?}");
+
+app.MapControllerRoute(
     name: "default",
     pattern: "{controller=Home}/{action=Index}/{id?}");
 
