@@ -51,19 +51,18 @@ namespace MTG_Card_Collection_App.Controllers
         {
             IMtgServiceProvider serviceProvider = new MtgServiceProvider();
             ICardService service = serviceProvider.GetCardService();
-
-            if (string.IsNullOrEmpty(nameFilter)){
-                nameFilter = "Avacyn";
-            }
-
-            var result = await service
+            var model = new SearchViewModel();
+            if (!string.IsNullOrEmpty(nameFilter)){
+                var result = await service
                 .Where(c => c.Name, nameFilter)
                 .AllAsync();
-
-            var model = new SearchViewModel
+                model.Cards = result.Value.OrderBy(c => c.Name).DistinctBy(c => c.Name).ToList();
+            } else
             {
-                Cards = result.Value.OrderBy(c => c.Name).DistinctBy(c => c.Name).ToList()
-            };
+                model.Cards = new List<MtgApiManager.Lib.Model.ICard>();
+                nameFilter = "";
+            }
+            model.NameFilter = nameFilter;
 
             return View(model);
         }
