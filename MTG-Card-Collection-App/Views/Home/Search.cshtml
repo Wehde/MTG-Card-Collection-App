@@ -8,7 +8,7 @@
 
 <form asp-controller="Home" asp-action="Search" method="get">
     Name: <input type="text" asp-for="NameFilter" />
-    <input type="submit" value="Filter" />
+    <button type="submit">Filter</button>
 </form>
 @if (Model.Cards.Count == 0)
 {
