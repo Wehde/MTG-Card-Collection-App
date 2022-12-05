@@ -39,9 +39,34 @@
                             <a class="nav-link text-dark" asp-area="" asp-controller="Home" asp-action="Privacy">Privacy</a>
                         </li>
                     </ul>
-                    <div class="navbar-nav navbar-right">
-                        <a class="nav-link"
-                            asp-area="Admin" asp-controller="Home" asp-action="Index">Admin</a>
+                    <div class="navbar-collapse collapse d-sm-inline-flex justify-content-between">
+                        <!-- Login buttons and links -->
+                        @using Microsoft.AspNetCore.Identity
+                        @using MTG_Card_Collection_App.Models;
+                        @inject SignInManager<User> signInManager
+                        <ul class="navbar-nav flex-grow-1">
+                            @if (signInManager.IsSignedIn(User))
+                            {
+                            // signed-in user - Log Out button and username
+                                <li class="nav-item">
+
+                                    <form method="post" asp-action="LogOut" asp-controller="Account" asp-area="">
+                                        <input type="submit" value="Log Out" />
+                                        <span class="text-light">@User.Identity.Name</span>
+                                    </form>
+                                </li>
+                            }
+                            else
+                            {
+                                // anonymous user - Register link and Log In button
+                                <li class="nav-item">
+                                    <a class="nav-link text-dark" asp-area="" asp-controller="Account" asp-action="Register">Register</a>
+                                </li>
+                                <li class="nav-item">
+                                    <a class="nav-link text-dark" asp-area="" asp-controller="Account" asp-action="Login">&nbsp;Log In</a>
+                                </li>
+                            }
+                        </ul>
                     </div>
                 </div>
             </div>
