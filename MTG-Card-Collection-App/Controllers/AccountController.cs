@@ -1,9 +1,11 @@
 ﻿using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using MTG_Card_Collection_App.Models;
+using Microsoft.AspNetCore.Authorization;
 
 namespace MTG_Card_Collection_App.Controllers
 {
+    [Authorize]
     public class AccountController : Controller
     {
         private UserManager<User> userManager;

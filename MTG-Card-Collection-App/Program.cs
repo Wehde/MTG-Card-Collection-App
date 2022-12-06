@@ -43,6 +43,8 @@ app.UseRouting();
 app.UseAuthentication();
 app.UseAuthorization();
 
+CardContext.CreateAdminUser(app.ApplicationServices).Wait();
+
 app.MapAreaControllerRoute(
         name: "admin",
         areaName: "Admin",

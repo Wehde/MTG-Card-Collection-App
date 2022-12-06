@@ -3,9 +3,11 @@ using MTG_Card_Collection_App.Models;
 using MtgApiManager.Lib.Service;
 using System.Collections.Immutable;
 using System.Diagnostics;
+using Microsoft.AspNetCore.Authorization;
 
 namespace MTG_Card_Collection_App.Controllers
 {
+    [Authorize]
     public class HomeController : Controller
     {
         private readonly ILogger<HomeController> _logger;
