@@ -1,11 +1,11 @@
 using System.Threading.Tasks;
 using System.Collections.Generic;
 using Microsoft.AspNetCore.Mvc;
-using Microsfot.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using MTG_Card_Collection_App.Models;
 
-[Authorize(Role = "Admin")]
+[Authorize]
 [Area("Admin")]
 public class UserController : Controller 
 {
