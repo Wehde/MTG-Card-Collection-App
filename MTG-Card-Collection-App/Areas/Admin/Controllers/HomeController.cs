@@ -1,12 +1,11 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using MTG_Card_Collection_App.Models;
 using System.Diagnostics;
-using Microsoft.AspNetCore.Authorization;
 
 namespace MTG_Card_Collection_App.Admin.Controllers
 {
     [Area("Admin")]
-    [Authorize(Roles = "Admin")]
+
     public class HomeController : Controller
     {
         private readonly ILogger<HomeController> _logger;
