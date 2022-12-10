@@ -15,7 +15,7 @@ namespace MTG_Card_Collection_App_Tests
             ICardService service = serviceProvider.GetCardService();
 
             //Act
-            var result = await service.FindAsync(409741);
+            var result = await service.FindAsync("409741");
 
             //Assert
             Assert.NotNull(result);
@@ -87,7 +87,7 @@ namespace MTG_Card_Collection_App_Tests
             //Assert
             Assert.NotNull(result);
             Assert.Single(result.Value);
-            Assert.Equal(491344, Int32.Parse(result.Value[0].MultiverseId));
+            Assert.Equal("491344", result.Value[0].MultiverseId);
         }
     }
 }
