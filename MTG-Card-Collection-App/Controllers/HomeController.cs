@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Identity;
+using Microsoft.AspNetCore.Mvc;
 using MTG_Card_Collection_App.Models;
 using MtgApiManager.Lib.Service;
 using System.Collections.Immutable;
@@ -9,11 +10,12 @@ namespace MTG_Card_Collection_App.Controllers
     public class HomeController : Controller
     {
         private readonly ILogger<HomeController> _logger;
+        private UserManager<User> userManager;
 
-
-        public HomeController(ILogger<HomeController> logger)
+        public HomeController(ILogger<HomeController> logger, UserManager<User> userManager)
         {
             _logger = logger;
+            this.userManager = userManager;
         }
 
         [Route("/")]
@@ -29,9 +31,15 @@ namespace MTG_Card_Collection_App.Controllers
         }
 
         [Route("Collection")]
-        public IActionResult Collection()
+        public async Task<IActionResult> Collection()
         {
-            return View();
+            var model = new CollectionViewModel();
+            User user = await userManager.GetUserAsync(HttpContext.User);
+            if (user.Cards != null)
+            {
+                model.Cards = user.Cards.Select(c => c.Card).ToList();
+            }
+            return View(model);
         }
 
         [Route("Decks")]

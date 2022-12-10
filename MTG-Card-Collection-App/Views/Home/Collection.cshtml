@@ -1,3 +1,37 @@
-﻿@{
+﻿@model CollectionViewModel
+
+@{
     ViewData["Title"] = "Collection";
+}
+
+<h1>Collection</h1>
+
+@if (Model.Cards == null)
+{
+    <p>Your collection is Empty. Please add some cards.</p>
+}
+else
+{
+    <table class="table table-bordered table-striped">
+        <thead>
+            <tr>
+                <th>Name</th>
+                <th>Cost</th>
+                <th>Type</th>
+                <th>Power</th>
+                <th>Toughness</th>
+            </tr>
+        </thead>
+        <tbody>
+
+            @foreach (MtgApiManager.Lib.Model.ICard card in Model.Cards)
+            {
+                <tr>
+                    <th>@card.Name</th>
+                    <th>@card.ManaCost</th>
+                    <th>@card.Type</th>
+                </tr>
+            }
+        </tbody>
+    </table>
 }

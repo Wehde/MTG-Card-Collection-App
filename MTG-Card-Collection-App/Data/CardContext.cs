@@ -16,6 +16,7 @@ namespace MTG_Card_Collection_App.Data
         }
 
         public DbSet<Card> Cards { get; set; }
+        public DbSet<CardCollection> CardCollections { get; set; }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
@@ -175,6 +176,19 @@ namespace MTG_Card_Collection_App.Data
                     ImageUrl = "http://gatherer.wizards.com/Handlers/Image.ashx?multiverseid=507589&type=card",
                     Printings = new List<string> { "10E", "2ED", "2XM", "3ED", "40K", "4BB", "4ED", "5ED", "6ED", "7ED", "8ED", "9ED", "AFR", "AKH", "AKR", "ALA", "ANA", "ANB", "ARC", "ATH", "AVR", "BBD", "BFZ", "BRB", "BTD", "C13", "C14", "C15", "C16", "C17", "C18", "C19", "CED", "CEI", "CHK", "CLB", "CM2", "CMA", "CMD", "CMR", "CST", "DD1", "DDD", "DDE", "DDG", "DDH", "DDJ", "DDL", "DDM", "DDO", "DDP", "DDR", "DDS", "DDU", "DKM", "DMU", "DOM", "DPA", "DTK", "E01", "ELD", "EVG", "FBB", "FRF", "G17", "GK1", "GK2", "GN2", "GNT", "GRN", "GS1", "GVL", "H09", "HBG", "HOP", "HOU", "ICE", "IKO", "INV", "ISD", "ITP", "J14", "JMP", "KHM", "KLD", "KLR", "KTK", "LEA", "LEB", "LRW", "M10", "M11", "M12", "M13", "M14", "M15", "M19", "M20", "M21", "MBS", "ME1", "ME3", "MH2", "MID", "MIR", "MMQ", "MRD", "NEO", "NPH", "ODY", "OLEP", "ONS", "ORI", "P02", "PAL00", "PAL01", "PAL03", "PAL04", "PAL05", "PAL06", "PAL99", "PALP", "PANA", "PARL", "PC2", "PCA", "PELP", "PF19", "PF20", "PGPX", "PGRU", "PMPS", "PMPS06", "PMPS07", "PMPS08", "PMPS09", "PMPS10", "PMPS11", "POR", "PPP1", "PRM", "PRW2", "PRWK", "PS11", "PSAL", "PSS2", "PSS3", "PTC", "PTK", "PZ2", "RAV", "RIX", "RNA", "ROE", "RQS", "RTR", "S99", "SHM", "SLD", "SNC", "SOI", "SOM", "STX", "SUM", "TD0", "TD2", "THB", "THS", "TMP", "TPR", "TSP", "UGL", "UND", "UNF", "UNH", "USG", "UST", "VOW", "WAR", "WC00", "WC01", "WC02", "WC03", "WC04", "WC97", "WC98", "WC99", "XANA", "XLN", "ZEN", "ZNR" }
                 });
+
+            modelBuilder.Entity<CardCollection>()
+                .HasKey(cc => new { cc.CardId, cc.UserId });
+
+            modelBuilder.Entity<CardCollection>()
+                .HasOne(cc => cc.Card)
+                .WithMany(c => c.Users)
+                .HasForeignKey(cc => cc.CardId);
+
+            modelBuilder.Entity<CardCollection>()
+                .HasOne(cc => cc.User)
+                .WithMany(c => c.Cards)
+                .HasForeignKey(cc => cc.UserId);
         }
 
         public static async Task CreateAdminUser(IServiceProvider serviceProvider)

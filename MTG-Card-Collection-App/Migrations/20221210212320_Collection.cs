@@ -5,7 +5,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 
 namespace MTG_Card_Collection_App.Migrations
 {
-    public partial class Initial : Migration
+    public partial class Collection : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
@@ -28,8 +28,6 @@ namespace MTG_Card_Collection_App.Migrations
                 columns: table => new
                 {
                     Id = table.Column<string>(type: "nvarchar(450)", nullable: false),
-                    FirstName = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    LastName = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     UserName = table.Column<string>(type: "nvarchar(256)", maxLength: 256, nullable: true),
                     NormalizedUserName = table.Column<string>(type: "nvarchar(256)", maxLength: 256, nullable: true),
                     Email = table.Column<string>(type: "nvarchar(256)", maxLength: 256, nullable: true),
@@ -64,14 +62,14 @@ namespace MTG_Card_Collection_App.Migrations
                     Supertypes = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     Types = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     Subtypes = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    Rarity = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    Set = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    Rarity = table.Column<string>(type: "nvarchar(14)", maxLength: 14, nullable: false),
+                    Set = table.Column<string>(type: "nvarchar(8)", maxLength: 8, nullable: false),
                     SetName = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     Text = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     Artist = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    Number = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    Power = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    Toughness = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    Number = table.Column<string>(type: "nvarchar(5)", maxLength: 5, nullable: false),
+                    Power = table.Column<string>(type: "nvarchar(3)", maxLength: 3, nullable: true),
+                    Toughness = table.Column<string>(type: "nvarchar(3)", maxLength: 3, nullable: true),
                     Layout = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     ImageUrl = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     Printings = table.Column<string>(type: "nvarchar(max)", nullable: true)
@@ -187,6 +185,30 @@ namespace MTG_Card_Collection_App.Migrations
                         onDelete: ReferentialAction.Cascade);
                 });
 
+            migrationBuilder.CreateTable(
+                name: "CardCollections",
+                columns: table => new
+                {
+                    CardId = table.Column<string>(type: "nvarchar(450)", nullable: false),
+                    UserId = table.Column<string>(type: "nvarchar(450)", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_CardCollections", x => new { x.CardId, x.UserId });
+                    table.ForeignKey(
+                        name: "FK_CardCollections_AspNetUsers_UserId",
+                        column: x => x.UserId,
+                        principalTable: "AspNetUsers",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                    table.ForeignKey(
+                        name: "FK_CardCollections_Cards_CardId",
+                        column: x => x.CardId,
+                        principalTable: "Cards",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                });
+
             migrationBuilder.InsertData(
                 table: "Cards",
                 columns: new[] { "Id", "Artist", "CMC", "ColorIdentity", "Colors", "ImageUrl", "Layout", "ManaCost", "Name", "Number", "Power", "Printings", "Rarity", "Set", "SetName", "Subtypes", "Supertypes", "Text", "Toughness", "Type", "Types" },
@@ -237,6 +259,11 @@ namespace MTG_Card_Collection_App.Migrations
                 column: "NormalizedUserName",
                 unique: true,
                 filter: "[NormalizedUserName] IS NOT NULL");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_CardCollections_UserId",
+                table: "CardCollections",
+                column: "UserId");
         }
 
         protected override void Down(MigrationBuilder migrationBuilder)
@@ -257,13 +284,16 @@ namespace MTG_Card_Collection_App.Migrations
                 name: "AspNetUserTokens");
 
             migrationBuilder.DropTable(
-                name: "Cards");
+                name: "CardCollections");
 
             migrationBuilder.DropTable(
                 name: "AspNetRoles");
 
             migrationBuilder.DropTable(
                 name: "AspNetUsers");
+
+            migrationBuilder.DropTable(
+                name: "Cards");
         }
     }
 }

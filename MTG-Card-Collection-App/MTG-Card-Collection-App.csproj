@@ -19,6 +19,7 @@
 
   <ItemGroup>
     <Folder Include="Components\" />
+    <Folder Include="Migrations\" />
   </ItemGroup>
 
 </Project>

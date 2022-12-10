@@ -7,5 +7,7 @@ namespace MTG_Card_Collection_App.Models
     {   
         [NotMapped]
         public IList<string> RoleNames { get; set; }
+
+        public List<CardCollection> Cards { get; set; }
     }
 }

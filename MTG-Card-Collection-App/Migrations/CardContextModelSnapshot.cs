@@ -190,21 +190,25 @@ namespace MTG_Card_Collection_App.Migrations
 
                     b.Property<string>("Number")
                         .IsRequired()
-                        .HasColumnType("nvarchar(max)");
+                        .HasMaxLength(5)
+                        .HasColumnType("nvarchar(5)");
 
                     b.Property<string>("Power")
-                        .HasColumnType("nvarchar(max)");
+                        .HasMaxLength(3)
+                        .HasColumnType("nvarchar(3)");
 
                     b.Property<string>("Printings")
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("Rarity")
                         .IsRequired()
-                        .HasColumnType("nvarchar(max)");
+                        .HasMaxLength(14)
+                        .HasColumnType("nvarchar(14)");
 
                     b.Property<string>("Set")
                         .IsRequired()
-                        .HasColumnType("nvarchar(max)");
+                        .HasMaxLength(8)
+                        .HasColumnType("nvarchar(8)");
 
                     b.Property<string>("SetName")
                         .IsRequired()
@@ -220,7 +224,8 @@ namespace MTG_Card_Collection_App.Migrations
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("Toughness")
-                        .HasColumnType("nvarchar(max)");
+                        .HasMaxLength(3)
+                        .HasColumnType("nvarchar(3)");
 
                     b.Property<string>("Type")
                         .IsRequired()
@@ -337,6 +342,21 @@ namespace MTG_Card_Collection_App.Migrations
                         });
                 });
 
+            modelBuilder.Entity("MTG_Card_Collection_App.Models.CardCollection", b =>
+                {
+                    b.Property<string>("CardId")
+                        .HasColumnType("nvarchar(450)");
+
+                    b.Property<string>("UserId")
+                        .HasColumnType("nvarchar(450)");
+
+                    b.HasKey("CardId", "UserId");
+
+                    b.HasIndex("UserId");
+
+                    b.ToTable("CardCollections");
+                });
+
             modelBuilder.Entity("MTG_Card_Collection_App.Models.User", b =>
                 {
                     b.Property<string>("Id")
@@ -451,6 +471,35 @@ namespace MTG_Card_Collection_App.Migrations
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
+                });
+
+            modelBuilder.Entity("MTG_Card_Collection_App.Models.CardCollection", b =>
+                {
+                    b.HasOne("MTG_Card_Collection_App.Models.Card", "Card")
+                        .WithMany("Users")
+                        .HasForeignKey("CardId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("MTG_Card_Collection_App.Models.User", "User")
+                        .WithMany("Cards")
+                        .HasForeignKey("UserId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Card");
+
+                    b.Navigation("User");
+                });
+
+            modelBuilder.Entity("MTG_Card_Collection_App.Models.Card", b =>
+                {
+                    b.Navigation("Users");
+                });
+
+            modelBuilder.Entity("MTG_Card_Collection_App.Models.User", b =>
+                {
+                    b.Navigation("Cards");
                 });
 #pragma warning restore 612, 618
         }

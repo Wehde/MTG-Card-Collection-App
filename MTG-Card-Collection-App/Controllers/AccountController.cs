@@ -29,7 +29,8 @@ namespace MTG_Card_Collection_App.Controllers
                 var user = new User
                 {
                     UserName = model.Username,
-                    Email = model.Email
+                    Email = model.Email,
+                    Cards = new List<CardCollection>()
                 };
 
                 var result = await userManager.CreateAsync(user, model.Password);

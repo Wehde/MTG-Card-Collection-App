@@ -1,4 +1,6 @@
-﻿namespace MTG_Card_Collection_App.Models
+﻿using System.ComponentModel.DataAnnotations;
+
+namespace MTG_Card_Collection_App.Models
 {
     public class Card
     {
@@ -12,16 +14,22 @@
         public List<string>? Supertypes { get; set; }
         public List<string> Types { get; set; }
         public List<string>? Subtypes { get; set; }
+        [MaxLength(14)]
         public string Rarity { get; set; }
+        [MaxLength(8)]
         public string Set { get; set; }
         public string SetName { get; set; }
         public string? Text { get; set; }
         public string Artist { get; set; }
+        [MaxLength(5)]
         public string Number { get; set; }
+        [MaxLength(3)]
         public string? Power { get; set; }
+        [MaxLength(3)]
         public string? Toughness { get; set; }
         public string Layout { get; set; }
         public string ImageUrl { get; set; }
         public List<string>? Printings { get; set; }
+        public List<CardCollection> Users { get; set; }
     }
 }
