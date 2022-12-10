@@ -16,6 +16,7 @@ builder.Services.AddDbContext<CardContext>(options => options.UseSqlServer(build
 
 builder.Services.AddIdentity<User, IdentityRole>(options =>
 {
+    options.User.RequireUniqueEmail = true;
     options.Password.RequiredLength = 6;
     options.Password.RequireNonAlphanumeric = false;
     options.Password.RequireDigit = false;
