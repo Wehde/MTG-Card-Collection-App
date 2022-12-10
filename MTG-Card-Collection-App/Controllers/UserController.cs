@@ -5,7 +5,7 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using MTG_Card_Collection_App.Models;
 
-[Authorize]
+[Authorize(Roles = "Admin")]
 [Area("Admin")]
 public class UserController : Controller 
 {
