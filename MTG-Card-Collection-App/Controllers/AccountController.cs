@@ -71,7 +71,7 @@ namespace MTG_Card_Collection_App.Controllers
             if (ModelState.IsValid)
             {
                 var result = await signInManager.PasswordSignInAsync(
-                    model.Email, model.Password, isPersistent: model.RememberMe,
+                    model.Username, model.Password, isPersistent: model.RememberMe,
                     lockoutOnFailure: false);
 
                 if (result.Succeeded)

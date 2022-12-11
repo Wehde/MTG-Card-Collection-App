@@ -5,8 +5,7 @@ namespace MTG_Card_Collection_App.Models
     public class LoginViewModel
     {
         [Required(ErrorMessage = "Please enter a email")]
-        [DataType(DataType.EmailAddress)]
-        public string Email { get; set; }
+        public string Username { get; set; }
 
         [Required(ErrorMessage = "Please enter a password")]
         [DataType(DataType.Password)]
