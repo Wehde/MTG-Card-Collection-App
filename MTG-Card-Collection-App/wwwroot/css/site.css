@@ -18,7 +18,7 @@ body {
 }
 
 .card-img {
-    float: right;
+    margin-left: 80px;
 }
 
 .card-name .card-img {
@@ -28,4 +28,9 @@ body {
 
 .card-name:hover .card-img {
     visibility: visible;
+}
+
+i {
+    margin: 0;
+    padding: 0;
 }

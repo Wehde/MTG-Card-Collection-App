@@ -35,5 +35,17 @@ namespace MTG_Card_Collection_App.Models
         public string ImageUrl { get; set; }
         public List<string>? Printings { get; set; }
         public ICollection<CardCollection>? Users { get; set; }
+
+        public string getIcons()
+        {
+            string icons = ManaCost;
+            icons = icons.ToLower();
+            icons = icons.Replace("/", "");
+            icons = icons.Replace("{", "<i class=\"ms ms-");
+            icons = icons.Replace("}", " ms-cost\"></i>");
+            
+            //List<string> iconList = icons.Split(',').ToList();
+            return icons;
+        }
     }
 }

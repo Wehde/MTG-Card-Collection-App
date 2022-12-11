@@ -38,7 +38,7 @@ else
                             <img src=@card.ImageUrl />
                         </span>
                     </th>
-                    <th>@card.ManaCost</th>
+                    <th>@Html.Raw(card.getIcons())</th>
                     <th>@card.Type</th>
                     <th>@card.Power</th>
                     <th>@card.Toughness</th>
