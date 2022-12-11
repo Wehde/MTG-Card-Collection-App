@@ -16,6 +16,7 @@ else
         <thead>
             <tr>
                 <th>Name</th>
+                <th>Img</th>
                 <th>Cost</th>
                 <th>Type</th>
                 <th>Power</th>
@@ -27,7 +28,16 @@ else
             @foreach (Card card in Model.Cards)
             {
                 <tr>
-                    <th>@card.Name</th>
+                    <th>
+                        @card.Name
+                        
+                        
+                    </th>
+                    <th class="card-name">
+                        <span class="card-img">
+                            <img src=@card.ImageUrl />
+                        </span>
+                    </th>
                     <th>@card.ManaCost</th>
                     <th>@card.Type</th>
                     <th>@card.Power</th>
