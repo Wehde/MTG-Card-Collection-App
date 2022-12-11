@@ -10,6 +10,9 @@
     <link rel="stylesheet" href="//cdn.jsdelivr.net/npm/keyrune@latest/css/keyrune.css" type="text/css" />
 </head>
 <body>
+    @using Microsoft.AspNetCore.Identity
+    @using MTG_Card_Collection_App.Models;
+    @inject SignInManager<User> signInManager
     <header>
         <nav class="navbar navbar-expand-sm navbar-toggleable-sm navbar-light bg-white border-bottom box-shadow mb-3">
             <div class="container-fluid">
@@ -40,10 +43,6 @@
                         }
                     </ul>
                     <div class="navbar-collapse collapse d-sm-inline-flex justify-content-between">
-                        <!-- Login buttons and links -->
-                        @using Microsoft.AspNetCore.Identity
-                        @using MTG_Card_Collection_App.Models;
-                        @inject SignInManager<User> signInManager
                         <ul class="navbar-nav flex-grow-1">
                             @if (signInManager.IsSignedIn(User))
                             {

@@ -5,11 +5,15 @@
 }
 
 <h1>Search</h1>
+@using Microsoft.AspNetCore.Identity
+@using MTG_Card_Collection_App.Models;
+@inject SignInManager<User> signInManager
 
 <form asp-controller="Home" asp-action="Search" method="get">
     Name: <input type="text" asp-for="NameFilter" />
     <button type="submit">Filter</button>
 </form>
+<p>@Model.Message</p>
 @if (Model.Cards.Count == 0)
 {
     @if (Model.NameFilter != ""){
@@ -22,6 +26,10 @@
                 <th>Name</th>
                 <th>Cost</th>
                 <th>Type</th>
+                @if (signInManager.IsSignedIn(User))
+                {
+                    <th></th>
+                }
             </tr>
         </thead>
         <tbody>
@@ -31,6 +39,16 @@
                     <th>@card.Name</th>
                     <th>@card.ManaCost</th>
                     <th>@card.Type</th>
+                    @if (signInManager.IsSignedIn(User))
+                    {
+                       <th>
+                            <form asp-controller="Home" asp-action="Search" method="post">
+                                <input type="text" asp-for="NameFilter" value=@Model.NameFilter hidden/>
+                               <input value="text" asp-for="SelectedCardId" value=@card.MultiverseId hidden>
+                                <button type="submit">Add</button>
+                           </form>
+                       </th>
+                    }
                 </tr>
             }
         </tbody>

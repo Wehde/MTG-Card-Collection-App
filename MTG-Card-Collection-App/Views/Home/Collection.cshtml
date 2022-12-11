@@ -24,12 +24,14 @@ else
         </thead>
         <tbody>
 
-            @foreach (MtgApiManager.Lib.Model.ICard card in Model.Cards)
+            @foreach (Card card in Model.Cards)
             {
                 <tr>
                     <th>@card.Name</th>
                     <th>@card.ManaCost</th>
                     <th>@card.Type</th>
+                    <th>@card.Power</th>
+                    <th>@card.Toughness</th>
                 </tr>
             }
         </tbody>
