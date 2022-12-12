@@ -47,6 +47,16 @@ namespace MTG_Card_Collection_App.Models
             return icons;
         }
 
+        public string GetManaCostIcons(string manaCost)
+        {
+            string icons = manaCost.ToLower();
+            icons = icons.Replace("/", "")
+                .Replace("{", "<i class=\"ms ms-")
+                .Replace("}", " ms-cost\"></i>");
+
+            return icons;
+        }
+
         public string GetSetIcon()
         {
             return "<i class=\"ss ss-" + Set.ToLower() + " ss-" + Rarity.ToLower() + "\"></i>";

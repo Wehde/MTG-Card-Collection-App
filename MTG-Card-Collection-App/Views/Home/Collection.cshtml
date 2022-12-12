@@ -19,8 +19,7 @@ else
                 <th>Img</th>
                 <th>Cost</th>
                 <th>Type</th>
-                <th>Power</th>
-                <th>Toughness</th>
+                <th>P / T</th>
                 <th></th>
             </tr>
         </thead>
@@ -34,15 +33,12 @@ else
                         
                         
                     </th>
-                    <th class="card-name">
-                        <span class="card-img">
-                            <img src=@card.ImageUrl />
-                        </span>
+                    <th class="grow">
+                        <img src=@card.ImageUrl />
                     </th>
                     <th>@Html.Raw(card.GetManaCostIcons())</th>
                     <th>@card.Type</th>
-                    <th>@card.Power</th>
-                    <th>@card.Toughness</th>
+                    <th>@card.Power @if(card.Power != null) {<span>/</span>} @card.Toughness</th>
                     <th><a asp-action="Details" asp-route-id="@card.Id">Details</a></th>
                 </tr>
             }

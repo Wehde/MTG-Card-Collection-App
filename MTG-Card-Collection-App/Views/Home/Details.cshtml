@@ -48,10 +48,8 @@
                         {
                             <tr>
                                 <th>@Html.Raw(Model.Card.GetSetIcon(card.Set, card.Rarity)) @card.SetName</th>
-                                <th class="card-name">
-                                    <span class="card-img">
-                                        <img src=@card.ImageUrl />
-                                    </span>
+                                <th class="grow">
+                                    <img src=@card.ImageUrl />
                                 </th>
                                 <th>
                                     <a asp-action="Edit" asp-route-id="@Model.Card.Id>@card.MultiverseId">Change Version</a>

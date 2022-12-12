@@ -37,7 +37,7 @@
             @foreach (MtgApiManager.Lib.Model.ICard card in Model.Cards){
                 <tr>
                     <th>@card.Name</th>
-                    <th>@card.ManaCost</th>
+                    <th>@Html.Raw(Model.Card.GetManaCostIcons(card.ManaCost))</th>
                     <th>@card.Type</th>
                     @if (signInManager.IsSignedIn(User))
                     {

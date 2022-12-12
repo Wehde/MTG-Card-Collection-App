@@ -17,20 +17,27 @@ body {
   margin-bottom: 60px;
 }
 
-.card-img {
-    margin-left: 80px;
+.grow {
+    
 }
 
-.card-name .card-img {
-    visibility: hidden;
-    position: absolute;
+.grow img {
+    transition: 1s ease;
+    height: 1em;
 }
 
-.card-name:hover .card-img {
-    visibility: visible;
-}
+    .grow img:hover {
+        -webkit-transform: scale(25);
+        -ms-transform: scale(25);
+        transform: scale(25);
+        transition: 1s ease;
+    }
 
 i {
-    margin: 0;
-    padding: 0;
+    position: relative;
+    z-index: -1;
+}
+
+.ms-1, .ms-2, .ms-3, .ms-4, .ms-5 {
+    margin-left: 0 !important;
 }

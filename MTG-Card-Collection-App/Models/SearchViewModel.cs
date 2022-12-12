@@ -8,5 +8,12 @@
         public string SelectedCardId { get; set; }
 
         public string Message { get; set; }
+
+        public Card Card { get; set; }
+
+        public SearchViewModel()
+        {
+            Card = new Card();
+        }
     }
 }
