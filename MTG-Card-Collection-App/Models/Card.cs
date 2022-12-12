@@ -1,4 +1,5 @@
 ﻿using System.ComponentModel.DataAnnotations;
+using System.Text.RegularExpressions;
 
 namespace MTG_Card_Collection_App.Models
 {
@@ -36,14 +37,36 @@ namespace MTG_Card_Collection_App.Models
         public List<string>? Printings { get; set; }
         public ICollection<CardCollection>? Users { get; set; }
 
-        public string getIcons()
+        public string GetManaCostIcons()
         {
-            string icons = ManaCost;
-            icons = icons.ToLower();
-            icons = icons.Replace("/", "");
-            icons = icons.Replace("{", "<i class=\"ms ms-");
-            icons = icons.Replace("}", " ms-cost\"></i>");
+            string icons = ManaCost.ToLower();
+            icons = icons.Replace("/", "")
+                .Replace("{", "<i class=\"ms ms-")
+                .Replace("}", " ms-cost\"></i>");
             
+            return icons;
+        }
+
+        public string GetSetIcon()
+        {
+            return "<i class=\"ss ss-" + Set.ToLower() + " ss-" + Rarity.ToLower() + "\"></i>";
+        }
+
+        public string GetSetIcon(string set, string rarity)
+        {
+            return "<i class=\"ss ss-" + set.ToLower() + " ss-" + rarity.ToLower() + "\"></i>";
+        }
+
+        public string GetTextIcons()
+        {
+            string icons = Text.Replace("\n", "<br />");
+            icons = Regex.Replace(icons, @"{(.*?)}", m => m.ToString().ToLower()
+                .Replace("/", "")
+                .Replace("t", "tap")
+                .Replace("q", "untap"))
+                .Replace("{", "<i class=\"ms ms-")
+                .Replace("}", " ms-cost\"></i>");
+
             return icons;
         }
     }

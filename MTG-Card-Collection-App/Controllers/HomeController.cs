@@ -48,6 +48,115 @@ namespace MTG_Card_Collection_App.Controllers
             return View(model);
         }
 
+        public async Task<IActionResult> Details(string id)
+        {
+            var model = new CardViewModel();
+            if(id != null)
+            {
+                model.Card = context.Cards.Find(id);
+                if(model.Card.Printings != null)
+                {
+                    IMtgServiceProvider serviceProvider = new MtgServiceProvider();
+                    ICardService service = serviceProvider.GetCardService();
+                    var result = await service
+                        .Where(c => c.Name, value: model.Card.Name)
+                        .AllAsync();
+                    model.Printings = result.Value.OrderBy(c => c.Name).Where(c => c.MultiverseId != null).ToList();
+                }
+            }
+            return View(model);
+        }
+
+        public async Task<IActionResult> Edit(string id)
+        {
+            var user = await userManager.GetUserAsync(HttpContext.User);
+            user = context.Users.Find(user.Id);
+            if (id != null)
+            {
+                IMtgServiceProvider serviceProvider = new MtgServiceProvider();
+                ICardService service = serviceProvider.GetCardService();
+
+                var oldId = id.Split(">")[0];
+                var newId = id.Split(">")[1];
+
+                var oldCard = context.Cards.Find(oldId);
+
+                var selectedCard = await service.FindAsync(newId);
+
+                var newCard = new Card
+                {
+                    Id = selectedCard.Value.MultiverseId,
+                    Name = selectedCard.Value.Name,
+                    ManaCost = selectedCard.Value.ManaCost,
+                    CMC = selectedCard.Value.Cmc,
+                    Type = selectedCard.Value.Type,
+                    Types = selectedCard.Value.Types.ToList(),
+                    Rarity = selectedCard.Value.Rarity,
+                    Set = selectedCard.Value.Set,
+                    SetName = selectedCard.Value.SetName,
+                    Text = selectedCard.Value.Text,
+                    Artist = selectedCard.Value.Artist,
+                    Number = selectedCard.Value.Number,
+                    Power = selectedCard.Value.Power,
+                    Toughness = selectedCard.Value.Toughness,
+                    Layout = selectedCard.Value.Layout,
+                    ImageUrl = selectedCard.Value.ImageUrl.ToString()
+                };
+
+                if (selectedCard.Value.Colors != null)
+                {
+                    newCard.Colors = selectedCard.Value.Colors.ToList();
+                }
+                if (selectedCard.Value.ColorIdentity != null)
+                {
+                    newCard.ColorIdentity = selectedCard.Value.ColorIdentity.ToList();
+                }
+                if (selectedCard.Value.SuperTypes != null)
+                {
+                    newCard.Supertypes = selectedCard.Value.SuperTypes.ToList();
+                }
+                if (selectedCard.Value.SubTypes != null)
+                {
+                    newCard.Subtypes = selectedCard.Value.SubTypes.ToList();
+                }
+                if (selectedCard.Value.Printings != null)
+                {
+                    newCard.Printings = selectedCard.Value.Printings.ToList();
+                }
+
+                if (context.Cards.Contains(newCard))
+                {
+                    newCard = context.Cards.Find(newCard);
+                }
+                
+                var entity = context.CardCollections.FirstOrDefault(x => x.CardId == oldCard.Id && x.UserId == user.Id);
+
+                context.Remove(entity);
+                context.SaveChanges();
+
+                entity.CardId = newCard.Id;
+                entity.Card = newCard;
+
+                context.CardCollections.Add(entity);
+                context.SaveChanges();
+            }
+            return RedirectToAction("Collection");
+        }
+
+        public async Task<IActionResult> Delete(string id)
+        {
+            var user = await userManager.GetUserAsync(HttpContext.User);
+            user = context.Users.Find(user.Id);
+            if (id != null)
+            {
+                var card = context.Cards.Find(id);
+                var entity = context.CardCollections.FirstOrDefault(x => x.CardId == card.Id && x.UserId == user.Id);
+                context.CardCollections.Remove(entity);
+                context.SaveChanges();
+            }
+            return RedirectToAction("Collection");
+        }
+
         [Route("Decks")]
         public IActionResult Decks()
         {

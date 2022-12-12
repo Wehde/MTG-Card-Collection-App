@@ -5,29 +5,67 @@
 
 <h1>Card Details</h1>
 
-<h3>@Model.Card.Name</h3>
-
 <div class="row">
     <div class="col-3">
         <div class="row">
             <img src=@Model.Card.ImageUrl />
         </div>
-        <div class="row">
-            <p>@Model.Card.Text</p>
-        </div>
     </div>
-    <div class="col-3">
+    <div class="col-4">
         <div class="row">
-            <p>@Model.Card.getIcons</p>
+            <h4>@Model.Card.Name @Html.Raw(Model.Card.GetManaCostIcons())</h4>
         </div>
         <div class="row">
-            <p>@Model.Card.Type</p>
+            <h5>@Model.Card.Type @Html.Raw(Model.Card.GetSetIcon()) @Model.Card.SetName</h5>
         </div>
         <div class="row">
-            <span>@Model.Card.Set @Model.Card.SetName</span>
+            <h5>@Html.Raw(Model.Card.GetTextIcons())</h5>
+        </div>
+        @if (Model.Card.Power != null){
+            <div class="row">
+                <h5>@Model.Card.Power / @Model.Card.Toughness</h5>
+            </div>
+        }
+    </div>
+    <div class="col-5">
+        <div class="row">
+            <h5>Actions</h5>
         </div>
         <div class="row">
-            <span>@Model.Card.Power / @Model.Card.Toughness</span>
+            @if (Model.Printings != null)
+            {
+                @if (Model.Printings.Count > 1)
+                {
+                    <table class="table table-bordered table-striped">
+                        <thead>
+                            <tr>
+                                <th>Set</th>
+                                <th>Img</th>
+                                <th></th>
+                            </tr>
+                        </thead>
+                        @foreach (MtgApiManager.Lib.Model.ICard card in Model.Printings)
+                        {
+                            <tr>
+                                <th>@Html.Raw(Model.Card.GetSetIcon(card.Set, card.Rarity)) @card.SetName</th>
+                                <th class="card-name">
+                                    <span class="card-img">
+                                        <img src=@card.ImageUrl />
+                                    </span>
+                                </th>
+                                <th>
+                                    <a asp-action="Edit" asp-route-id="@Model.Card.Id>@card.MultiverseId">Change Version</a>
+                                </th>
+                            </tr>
+                        }
+                    </table>
+                }
+            }
+        </div>
+        
+        
+        <div class="row">
+            <a asp-action="Delete" asp-route-id="@Model.Card.Id">Remove from Collection</a>
         </div>
     </div>
 </div>
