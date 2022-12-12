@@ -44,7 +44,6 @@ namespace MTG_Card_Collection_App.Models
             icons = icons.Replace("{", "<i class=\"ms ms-");
             icons = icons.Replace("}", " ms-cost\"></i>");
             
-            //List<string> iconList = icons.Split(',').ToList();
             return icons;
         }
     }

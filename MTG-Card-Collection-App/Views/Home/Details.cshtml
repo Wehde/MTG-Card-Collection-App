@@ -1,0 +1,33 @@
+﻿@model CardViewModel
+@{
+    ViewData["Title"] = "Card Details";
+}
+
+<h1>Card Details</h1>
+
+<h3>@Model.Card.Name</h3>
+
+<div class="row">
+    <div class="col-3">
+        <div class="row">
+            <img src=@Model.Card.ImageUrl />
+        </div>
+        <div class="row">
+            <p>@Model.Card.Text</p>
+        </div>
+    </div>
+    <div class="col-3">
+        <div class="row">
+            <p>@Model.Card.getIcons</p>
+        </div>
+        <div class="row">
+            <p>@Model.Card.Type</p>
+        </div>
+        <div class="row">
+            <span>@Model.Card.Set @Model.Card.SetName</span>
+        </div>
+        <div class="row">
+            <span>@Model.Card.Power / @Model.Card.Toughness</span>
+        </div>
+    </div>
+</div>
