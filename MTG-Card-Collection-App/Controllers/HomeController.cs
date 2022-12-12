@@ -38,9 +38,27 @@ namespace MTG_Card_Collection_App.Controllers
         [Route("Collection")]
         public async Task<IActionResult> Collection()
         {
+            var session = new CardSession(HttpContext.Session);
+            int? count = session.GetMyCardCount();
+            if(count == null)
+            {
+                var cookies = new CardCookies(Request.Cookies);
+                string[] ids = cookies.GetMyCardIds();
+
+                List<Card> mycards = new List<Card>();
+                if (ids.Length > 0)
+                    mycards = context.Cards.Where(c => ids.Contains(c.Id)).ToList();
+                session.SetMyCards(mycards);
+            }
+
             var model = new CollectionViewModel();
             var user = await userManager.GetUserAsync(HttpContext.User);
+            if (user == null)
+            {
+                return RedirectToAction("LogIn", "Account");
+            }
             user = context.Users.Find(user.Id);
+
             if (user.Cards != null)
             {
                 model.Cards = context.CardCollections.Where(c => c.UserId.Equals(user.Id)).Select(c => c.Card).ToList();
@@ -50,16 +68,26 @@ namespace MTG_Card_Collection_App.Controllers
 
         public async Task<IActionResult> Details(string id)
         {
+            var user = await userManager.GetUserAsync(HttpContext.User);
+            if (user == null)
+            {
+                return RedirectToAction("LogIn", "Account");
+            }
             var model = new CardViewModel();
             if(id != null)
             {
                 model.Card = context.Cards.Find(id);
+                if(model.Card == null)
+                {
+                    return RedirectToAction("Collection");
+                }
                 if(model.Card.Printings != null)
                 {
                     IMtgServiceProvider serviceProvider = new MtgServiceProvider();
                     ICardService service = serviceProvider.GetCardService();
                     var result = await service
                         .Where(c => c.Name, value: model.Card.Name)
+                        .Where(c => c.Text, value: model.Card.Text)
                         .AllAsync();
                     model.Printings = result.Value.OrderBy(c => c.Name).Where(c => c.MultiverseId != null).ToList();
                 }
@@ -126,7 +154,7 @@ namespace MTG_Card_Collection_App.Controllers
 
                 if (context.Cards.Contains(newCard))
                 {
-                    newCard = context.Cards.Find(newCard);
+                    newCard = context.Cards.Find(newCard.Id);
                 }
                 
                 var entity = context.CardCollections.FirstOrDefault(x => x.CardId == oldCard.Id && x.UserId == user.Id);
@@ -157,8 +185,27 @@ namespace MTG_Card_Collection_App.Controllers
             return RedirectToAction("Collection");
         }
 
+        [HttpPost]
+        public RedirectToActionResult Add(CardViewModel model)
+        {
+            model.Card = context.Cards.Find(model.Card.Id);
+
+            var session = new CardSession(HttpContext.Session);
+            var cards = session.GetMyCards();
+
+            cards.Add(model.Card);
+            session.SetMyCards(cards);
+
+            var cookies = new CardCookies(Response.Cookies);
+            cookies.SetMyCardIds(cards);
+
+            TempData["message"] = $"{model.Card.Name} added to your deck";
+
+            return RedirectToAction("Collection");
+        }
+
         [Route("Decks")]
-        public IActionResult Decks()
+        public IActionResult Deck()
         {
             return View();
         }
@@ -235,7 +282,7 @@ namespace MTG_Card_Collection_App.Controllers
 
                 if (context.Cards.Contains(card))
                 {
-                    card = context.Cards.Find(card);
+                    card = context.Cards.Find(card.Id);
                 }
 
                 var user = await userManager.GetUserAsync(HttpContext.User);

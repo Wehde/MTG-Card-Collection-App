@@ -1,0 +1,53 @@
+﻿@model CollectionViewModel
+
+@{
+    ViewData["Title"] = "Deck";
+}
+
+<h1>Deck</h1>
+
+@if (Model.Cards.Count == 0)
+{
+    <p>Your deck is Empty. Please add some cards.</p>
+}
+else
+{
+    <form asp-action="Delete" method="post">
+        <button type="submit">Clear Deck</button>
+    </form>
+    <table class="table table-bordered table-striped">
+        <thead>
+            <tr>
+                <th>Name</th>
+                <th>Img</th>
+                <th>Cost</th>
+                <th>Type</th>
+                <th>P / T</th>
+                <th></th>
+            </tr>
+        </thead>
+        <tbody>
+
+            @foreach (Card card in Model.Cards)
+            {
+                <tr>
+                    <th>
+                        @card.Name
+
+
+                    </th>
+                    <th class="grow">
+                        <img src=@card.ImageUrl />
+                    </th>
+                    <th>@card.ManaCost</th>
+                    <th>@card.Type</th>
+                    <th>@card.Power @if (card.Power != null)
+                        {
+                            <span>/</span>
+                        } @card.Toughness</th>
+                    <th><a asp-action="Details" asp-controller="Home" asp-route-id="@card.Id">Details</a></th>
+                </tr>
+            }
+        </tbody>
+    </table>
+}

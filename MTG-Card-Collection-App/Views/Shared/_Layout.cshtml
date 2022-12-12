@@ -15,6 +15,9 @@
     @using MTG_Card_Collection_App.Models;
     @inject SignInManager<User> signInManager
     <header>
+        
+
+       
         <nav class="navbar navbar-expand-sm navbar-toggleable-sm navbar-light bg-white border-bottom box-shadow mb-3">
             <div class="container-fluid">
                 <a class="navbar-brand" asp-area="" asp-controller="Home" asp-action="Index">MTG Card Collection App</a>
@@ -36,7 +39,11 @@
                                 <a class="nav-link text-dark" asp-area="" asp-controller="Home" asp-action="Collection">Collection</a>
                             </li>
                             <li class="nav-item">
-                                <a class="nav-link text-dark" asp-area="" asp-controller="Home" asp-action="Decks">Decks</a>
+                                @if (!ViewContext.View.Path.Contains("Deck"))
+                                {
+                                    var session = new CardSession(Context.Session);
+                                    <a class="nav-link text-dark" asp-area="" asp-controller="Deck" asp-action="Index">Deck</a>
+                                }
                             </li>
                             <li class="nav-item">
                                 <a class="nav-link text-dark" asp-area="" asp-controller="Home" asp-action="Social">Social</a>
@@ -73,6 +80,10 @@
         </nav>
     </header>
     <div class="container">
+        @if (TempData["message"] != null)
+        {
+            <h4 class="bg-success p-2">@TempData["message"]</h4>
+        }
         <main role="main" class="pb-3">
             @RenderBody()
         </main>
