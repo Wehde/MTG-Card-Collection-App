@@ -49,11 +49,14 @@ namespace MTG_Card_Collection_App.Models
 
         public string GetManaCostIcons(string manaCost)
         {
-            string icons = manaCost.ToLower();
-            icons = icons.Replace("/", "")
-                .Replace("{", "<i class=\"ms ms-")
-                .Replace("}", " ms-cost\"></i>");
-
+            string icons = "";
+            if (!string.IsNullOrEmpty(manaCost))
+            {
+                icons = manaCost.ToLower();
+                icons = icons.Replace("/", "")
+                    .Replace("{", "<i class=\"ms ms-")
+                    .Replace("}", " ms-cost\"></i>");
+            }
             return icons;
         }
 
